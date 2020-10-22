@@ -1,7 +1,9 @@
-const Menu = require('../models/Menu')
+//https://bezkoder.com/node-js-upload-multiple-files/ 
+//might help with multer
+
 //This is our database model we can use methods on this like find
 //create, remove
-
+const Menu = require('../models/Menu')
 
 //desc get all items from the menu
 //route Get '/menu'
@@ -14,6 +16,8 @@ exports.getMenu = async (req, res, next) => {
             count: menu.length,
             data: menu
         })
+
+        // return res.json(menu)
     } catch (err) {
         return res.status(500).json({
             success: false,
@@ -27,7 +31,6 @@ exports.getMenu = async (req, res, next) => {
 exports.addMenuItems = async (req, res, next) => {
     try {
         const { name, type, description, price, picture } = req.body
-
         const menu = await Menu.create(req.body)
 
         return res.status(201).json({

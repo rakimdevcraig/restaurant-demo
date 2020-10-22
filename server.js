@@ -10,12 +10,17 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require("path")
 
+
 //Allow cors
 app.use(cors());
 
 //Bodyparser middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+//set a static folder if we want to serve multiple html pages, & files like css/js
+app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'public/img')))
 
 //db config
 const db = require('./config/keys').mongoURI
