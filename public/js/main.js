@@ -5,6 +5,7 @@ function getMenu() {
             let menuData = data.data
             let output = '';
             menuData.forEach(function (item) {
+                console.log(item)
                 output += `
             <div class="card card-body mb-3 bg-light">
             <img class="img-fluid" src="${item.picture}">
@@ -13,50 +14,49 @@ function getMenu() {
             <h3>Item Description: ${item.description}</h3>
             <h3>Item Type: ${item.type}</h3>
             <h3>Add instructions <textarea id="instructions"></textarea> </h3>
-            <button type="button" onclick="addToCart('${item._id}','${item.name}','${item.description}','${item.picture}', '${item.price}', ${item.type},${extraInstructions})">Add To Cart</button> 
+            <button type="button" onclick="addToCart('${item._id}','${item.name}','${item.description}','${item.picture}', '${item.price}', '${item.type}')">Add To Cart</button> 
             </div>
             `;
             });
             document.getElementById('output').innerHTML = output;
         })
 }
-let extraInstructions = document.getElementById('instructions').value
 
 
-function addToCart(itemID, itemName, itemDescription, itemPicture, itemPrice, itemType, itemInstructions) {
+function addToCart(itemID, itemName, itemDescription, itemPicture, itemPrice, itemType) {
+    let extraInstructions = document.getElementById('instructions').value
     let id = itemID
     let name = itemName
     let description = itemDescription
     let picture = itemPicture
     let price = itemPrice
     let type = itemType
-    let instructions = itemInstructions
+    // console.log(extraInstructions, id, name, description, picture, price, type)
+    fetch("http://localhost:5000/cart", {
 
-    console.log(instructions, name)
-    // fetch("http://localhost:5000/api/cart", {
-
-    //     // Adding method type 
-    //     method: "POST",
-    //     // Adding body or contents to send 
-    //     // Adding headers to the request 
-    //     headers: {
-    //         "Content-type": "application/json"
-    //     },
-    //     body: JSON.stringify({
-    //         "cartItems": {
-    //             "product": id,
-    //             "name": name,
-    //             "quantity": quantity,
-    //             "picture": picture,
-    //             "price": price,
-    //             "type": type
-    //         }
-    //     })
-    // })
-    //     // Converting to JSON 
-    //     .then(response => response.json())
-    //     // Displaying results to console 
-    //     .then(json => console.log(json));
+        // Adding method type 
+        method: "POST",
+        // Adding body or contents to send 
+        // Adding headers to the request 
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({
+            "cartItems": {
+                "id": id,
+                "name": name,
+                "description": description,
+                "picture": picture,
+                "price": price,
+                "type": type,
+                "extraInstructions": extraInstructions
+            }
+        })
+    })
+        // Converting to JSON 
+        .then(response => response.json())
+        // Displaying results to console 
+        .then(json => console.log(json));
 }
 
 getMenu()
