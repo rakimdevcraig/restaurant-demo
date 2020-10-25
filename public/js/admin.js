@@ -26,5 +26,21 @@ function addItemToMenu(e) {
     })
         .then((res) => res.json())
         .then((data) => console.log(data))
+
+    confirmAddToMenu()
 }
 
+function confirmAddToMenu() {
+    let output = ''
+    output +=
+        `
+    <div class="alert alert-success" role="alert">
+    Item successfully Added to menu!
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    `
+    document.getElementById('alert').innerHTML = output;
+
+}

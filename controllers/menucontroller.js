@@ -53,12 +53,32 @@ exports.getCart = async (req, res, next) => {
 exports.addToCart = async (req, res, next) => {
     try {
         const { name, type, description, price, picture, id, extraInstructions } = req.body
-        const cart = await Cart.create(req.body)
+        //finds the length of the cart so we can tell if it's empty or not
+        let cartLength = await Cart.find()
+        //if cartlength is 0 then we need to create a new cart
+        if (cartLength.length === 0) {
+            newCart = await Cart.create(req.body)
 
-        return res.status(201).json({
-            success: true,
-            data: cart
-        })
+            return res.status(201).json({
+                Message: 'created new cart',
+                data: newCart
+            })
+        } else {
+            // const cart = await Cart.findOneAndUpdate(req.body)
+            //updateOne updates the document at the top
+            updatedCart = await Cart.updateOne(
+                //$push adds a value to an array
+                //I might need to use upsert If i want to increase the 
+                //quantity of an item
+                { "$push": { "cartItems": req.body.cartItems } }
+            )
+            return res.status(201).json({
+                success: 'updated cart',
+                data: updatedCart
+            })
+
+
+        }
     } catch (err) {
         console.log(err)
         return res.status(500).json({
@@ -67,6 +87,23 @@ exports.addToCart = async (req, res, next) => {
         })
     }
 }
+// exports.addToCart = async (req, res, next) => {
+//     try {
+//         const { name, type, description, price, picture, id, extraInstructions } = req.body
+//         const cart = await Cart.create(req.body)
+
+//         return res.status(201).json({
+//             success: true,
+//             data: cart
+//         })
+//     } catch (err) {
+//         console.log(err)
+//         return res.status(500).json({
+//             success: false,
+//             error: 'Server Error'
+//         })
+//     }
+// }
 // {
 //     "cartItems":{
 //             "name": "test",

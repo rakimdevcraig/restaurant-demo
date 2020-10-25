@@ -11,3 +11,7 @@ exports.getHomePage = (req, res, next) => {
 exports.getAdminPage = (req, res, next) => {
     res.sendFile(publicPath + '/admin.html');
 }
+
+exports.getOrderPage = (req, res, next) => {
+    res.sendFile(publicPath + '/orders.html');
+}
